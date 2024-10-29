@@ -1,12 +1,11 @@
-import express, { Application, Request, Response } from 'express';
+//require("dotenv").config();
+import 'dotenv/config';
+import './services/dbConnection';
+import server from './server';
 
-const app: Application = express();
-const port: number = 3000;
+const HOSTNAME: string = process.env.HOSTNAME || '';
+const PORT: number = Number(process.env.PORT);
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, World!');
-});
-
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+server.listen(PORT, () => {
+  console.log(`Server is running on ${HOSTNAME}:${PORT}`);
 });
