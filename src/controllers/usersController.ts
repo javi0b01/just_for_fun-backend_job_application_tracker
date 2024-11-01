@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { HydratedDocument } from 'mongoose';
 import bcryptjs from 'bcryptjs';
 import User from '../models/userModel';
-import { IUser } from '../interfaces/userInterface';
+import { IUser, IUserList } from '../interfaces/userInterface';
 import errorHandler from '../middlewares/errorHandler';
 
 const UsersController = {
@@ -21,7 +21,7 @@ const UsersController = {
         const userCreated = await newUser.save();
         if (userCreated._id === newUser._id) {
           res.status(201).json({
-            message: 'new user created',
+            message: 'Got a POST request | new user created',
             id: userCreated._id.toString(),
           });
         } else
@@ -38,9 +38,20 @@ const UsersController = {
       });
     }
   },
-  readAll: (req: Request, res: Response) => {
+  readAll: async (req: Request, res: Response) => {
     try {
-      res.json({ message: 'Got a GET request' });
+      const allUsers = await User.find();
+      const arr = allUsers.map((user) => {
+        const obj: IUserList = {
+          id: user._id.toString(),
+          nickname: user.firstName,
+          image: user.image,
+        };
+        return obj;
+      });
+      res
+        .status(200)
+        .json({ message: 'Got a GET request | all users', data: arr });
     } catch (error) {
       errorHandler(error, req, res, () => {
         console.log('error caught');

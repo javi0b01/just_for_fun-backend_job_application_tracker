@@ -9,3 +9,9 @@ export interface IUser {
   enable: boolean;
   birthDay: Date;
 }
+
+export interface IUserList {
+  id: string;
+  nickname: string;
+  image: string;
+}
