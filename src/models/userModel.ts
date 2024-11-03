@@ -7,6 +7,7 @@ const userSchema: Schema = new Schema<IUser, UserModel>(
   {
     firstName: { type: String, require: true },
     lastName: { type: String, require: true },
+    nickname: { type: String, require: true },
     email: { type: String, require: true },
     password: { type: String, require: true },
     image: { type: String, require: true },
