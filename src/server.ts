@@ -1,4 +1,5 @@
 import express, { Application, Request, Response } from 'express';
+import signUpRouter from './routers/signUpRouter';
 import userRouter from './routers/usersRouter';
 
 const morgan = require('morgan');
@@ -10,9 +11,11 @@ server.use(morgan('dev'));
 server.use(cors());
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
+server.use('/api', signUpRouter);
 server.use('/api', userRouter);
 
 server.get('/', (req: Request, res: Response) => {
+  //console.info(req);
   res.json({ message: 'Works!' });
 });
 
