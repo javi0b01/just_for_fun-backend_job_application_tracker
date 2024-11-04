@@ -6,8 +6,8 @@ const router: Router = Router();
 
 router.use(timeLog);
 
-router.post('/sign-up', SignUpController.register);
-router.patch('/sign-up/:id', SignUpController.changePassword);
-router.delete('/sign-up/:id', SignUpController.delete);
+router.post('/', SignUpController.register);
+router.patch('/:id', SignUpController.changePassword);
+router.delete('/:id', SignUpController.delete);
 
 export default router;

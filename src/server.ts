@@ -1,5 +1,6 @@
 import express, { Application, Request, Response } from 'express';
 import signUpRouter from './routers/signUpRouter';
+import signInRouter from './routers/signInRouter';
 import userRouter from './routers/usersRouter';
 
 const morgan = require('morgan');
@@ -11,8 +12,9 @@ server.use(morgan('dev'));
 server.use(cors());
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
-server.use('/api', signUpRouter);
-server.use('/api', userRouter);
+server.use('/api/sign-up/', signUpRouter);
+server.use('/api/sign-in/', signInRouter);
+server.use('/api/users/', userRouter);
 
 server.get('/', (req: Request, res: Response) => {
   //console.info(req);
