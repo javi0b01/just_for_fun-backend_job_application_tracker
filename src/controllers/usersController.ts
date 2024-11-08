@@ -23,26 +23,43 @@ const UsersController = {
           if (userCreated._id === newUser._id) {
             await setUserProfile(req.body.recordId);
             res.status(201).json({
-              message: 'Got a POST request | new user created',
-              id: userCreated._id.toString(),
+              message: {
+                severity: 'success',
+                summary: 'Done!',
+                detail: 'New user created',
+              },
+              data: userCreated._id.toString(),
             });
           } else
             res.status(200).json({
-              message: 'Got a POST request | try again',
+              message: {
+                severity: 'warn',
+                summary: 'Oops!',
+                detail: 'Try again',
+              },
+              data: null,
             });
         } else
           res.status(200).json({
-            message: 'Got a POST request | user already exists',
+            message: {
+              severity: 'warn',
+              summary: 'Oops!',
+              detail: 'User already exists',
+            },
+            data: null,
           });
       } else {
         res.status(404).json({
-          message: 'Got a POST request | record not found',
+          message: {
+            severity: 'warn',
+            summary: 'Oops!',
+            detail: 'Record not found',
+          },
+          data: null,
         });
       }
     } catch (error) {
-      errorHandler(error, req, res, () => {
-        console.warn('Got a POST request | error caught');
-      });
+      errorHandler(error, req, res, () => null);
     }
   },
   readAll: async (req: Request, res: Response) => {
@@ -56,13 +73,16 @@ const UsersController = {
         };
         return obj;
       });
-      res
-        .status(200)
-        .json({ message: 'Got a GET request | all users', data: arr });
-    } catch (error) {
-      errorHandler(error, req, res, () => {
-        console.warn('Got a GET request | error caught');
+      res.status(200).json({
+        message: {
+          severity: 'success',
+          summary: 'Done!',
+          detail: 'All users',
+        },
+        data: arr,
       });
+    } catch (error) {
+      errorHandler(error, req, res, () => null);
     }
   },
   read: async (req: Request, res: Response) => {
@@ -83,30 +103,47 @@ const UsersController = {
             birthDay: userFound.birthDay,
           };
           res.status(200).json({
-            message: 'Got a GET request | user info',
+            message: {
+              severity: 'success',
+              summary: 'Done!',
+              detail: 'User info',
+            },
             data: userInfo,
           });
         } else {
           res.status(404).json({
-            message: 'Got a POST request | record not found',
+            message: {
+              severity: 'warn',
+              summary: 'Oops!',
+              detail: 'Record not found',
+            },
+            data: null,
           });
         }
       } else {
         res.status(404).json({
-          message: 'Got a GET request | user not found',
+          message: {
+            severity: 'warn',
+            summary: 'Oops!',
+            detail: 'User not found',
+          },
+          data: null,
         });
       }
     } catch (error) {
-      errorHandler(error, req, res, () => {
-        console.warn('Got a GET request | error caught');
-      });
+      errorHandler(error, req, res, () => null);
     }
   },
   update: async (req: Request, res: Response) => {
     try {
       if (req.body.recordId) {
         res.status(401).json({
-          message: 'Got a PUT request | unauthorized',
+          message: {
+            severity: 'warn',
+            summary: 'Oops!',
+            detail: 'Unauthorized',
+          },
+          data: null,
         });
       } else {
         const userFound = await User.findByIdAndUpdate(req.params.id, {
@@ -114,18 +151,26 @@ const UsersController = {
         });
         if (userFound) {
           res.status(200).json({
-            message: 'Got a PUT request | user updated',
+            message: {
+              severity: 'success',
+              summary: 'Done!',
+              detail: 'User updated',
+            },
+            data: null,
           });
         } else {
           res.status(404).json({
-            message: 'Got a PUT request | user not found',
+            message: {
+              severity: 'warn',
+              summary: 'Oops!',
+              detail: 'User not found',
+            },
+            data: null,
           });
         }
       }
     } catch (error) {
-      errorHandler(error, req, res, () => {
-        console.warn('Got a PUT request | error caught');
-      });
+      errorHandler(error, req, res, () => null);
     }
   },
 };

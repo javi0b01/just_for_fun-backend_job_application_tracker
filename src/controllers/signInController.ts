@@ -20,21 +20,36 @@ const SignInController = {
           const token = await getToken({
             id: recordFound._id.toString(),
           });
-          res.status(200).json(token);
+          res.status(200).json({
+            message: {
+              severity: 'success',
+              summary: 'Done!',
+              detail: 'Sign in successfully',
+            },
+            data: token,
+          });
         } else {
           res.status(200).json({
-            message: 'Got a POST request | username and/or password invalids',
+            message: {
+              severity: 'warn',
+              summary: 'Oops!',
+              detail: 'Username and/or Password invalids',
+            },
+            data: null,
           });
         }
       } else {
         res.status(404).json({
-          message: 'Got a POST request | username and/or password invalids',
+          message: {
+            severity: 'warn',
+            summary: 'Oops!',
+            detail: 'Username and/or Password invalids',
+          },
+          data: null,
         });
       }
     } catch (error) {
-      errorHandler(error, req, res, () => {
-        console.warn('Got a POST request | error caught');
-      });
+      errorHandler(error, req, res, () => null);
     }
   },
 };

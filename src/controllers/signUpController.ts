@@ -26,22 +26,34 @@ const SignUpController = {
         const recordCreated = await newRecord.save();
         if (recordCreated._id === newRecord._id) {
           res.status(201).json({
-            message: 'Got a POST request | sign up successfuly',
-            id: recordCreated._id.toString(),
+            message: {
+              severity: 'success',
+              summary: 'Done!',
+              detail: 'Sign up successfully',
+            },
+            data: recordCreated._id.toString(),
           });
         } else
           res.status(200).json({
-            message: 'Got a POST request | try again',
+            message: {
+              severity: 'warn',
+              summary: 'Oops!',
+              detail: 'Try again',
+            },
+            data: null,
           });
       } else {
         res.status(200).json({
-          message: 'Got a POST request | record already exists',
+          message: {
+            severity: 'warn',
+            summary: 'Oops!',
+            detail: 'Record already exists',
+          },
+          data: null,
         });
       }
     } catch (error) {
-      errorHandler(error, req, res, () => {
-        console.warn('Got a POST request | error caught');
-      });
+      errorHandler(error, req, res, () => null);
     }
   },
   changePassword: async (req: Request, res: Response) => {
@@ -61,33 +73,55 @@ const SignUpController = {
             });
             if (record) {
               res.status(200).json({
-                message: 'Got a PATCH request | password changed',
+                message: {
+                  severity: 'success',
+                  summary: 'Done!',
+                  detail: 'Password changed successfully',
+                },
+                data: null,
               });
             } else {
               res.status(404).json({
-                message: 'Got a PATCH request | try again',
+                message: {
+                  severity: 'warn',
+                  summary: 'Oops!',
+                  detail: 'Try again',
+                },
+                data: null,
               });
             }
           } else {
             res.status(200).json({
-              message:
-                'Got a PATCH request | current password wrong, password not changed',
+              message: {
+                severity: 'warn',
+                summary: 'Oops!',
+                detail: 'Current password wrong',
+              },
+              data: null,
             });
           }
         } else {
           res.status(401).json({
-            message: 'Got a PATCH request | unauthorized',
+            message: {
+              severity: 'warn',
+              summary: 'Oops!',
+              detail: 'Unauthorized',
+            },
+            data: null,
           });
         }
       } else {
         res.status(404).json({
-          message: 'Got a PATCH request | record not found',
+          message: {
+            severity: 'warn',
+            summary: 'Oops!',
+            detail: 'Record not found',
+          },
+          data: null,
         });
       }
     } catch (error) {
-      errorHandler(error, req, res, () => {
-        console.warn('Got a PATCH request | error caught');
-      });
+      errorHandler(error, req, res, () => null);
     }
   },
   delete: async (req: Request, res: Response) => {
@@ -96,17 +130,25 @@ const SignUpController = {
       if (recordDeleted) {
         await deleteUser(req.params.id);
         res.status(204).json({
-          message: 'Got a DELETE request | record deleted',
+          message: {
+            severity: 'success',
+            summary: 'Done!',
+            detail: 'Record deleted',
+          },
+          data: null,
         });
       } else {
         res.status(404).json({
-          message: 'Got a DELETE request | record not found',
+          message: {
+            severity: 'warn',
+            summary: 'Oops!',
+            detail: 'Record not found',
+          },
+          data: null,
         });
       }
     } catch (error) {
-      errorHandler(error, req, res, () => {
-        console.warn('Got a DELETE request | error caught');
-      });
+      errorHandler(error, req, res, () => null);
     }
   },
 };
