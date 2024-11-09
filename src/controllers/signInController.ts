@@ -19,6 +19,7 @@ const SignInController = {
         if (validPassword) {
           const token = await getToken({
             id: recordFound._id.toString(),
+            profile: recordFound.profile,
           });
           res.status(200).json({
             message: {

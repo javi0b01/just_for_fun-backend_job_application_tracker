@@ -1,13 +1,13 @@
 {
   "name": "just_for_fun-backend_job_application_tracker",
+  "author": "https://github.com/javierandres-dev",
+  "license": "No License",
   "version": "0.0.1",
   "main": "src/index.ts",
   "scripts": {
     "start": "ts-node src/index.ts",
     "dev": "nodemon src/index.ts"
   },
-  "author": "https://github.com/javierandres-dev",
-  "license": "No License",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/express": "^5.0.0",

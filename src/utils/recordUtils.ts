@@ -12,11 +12,7 @@ export async function getRecord(id: string) {
 }
 
 export async function setUserProfile(id: string) {
-  try {
-    await Record.findByIdAndUpdate(id, {
-      profile: ProfileCodes.User,
-    });
-  } catch (error) {
-    console.warn('setUserProfile | error caught');
-  }
+  await Record.findByIdAndUpdate(id, {
+    profile: ProfileCodes.User,
+  });
 }
