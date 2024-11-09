@@ -12,11 +12,11 @@ const SignInController = {
       const { username, password } = req.body;
       const recordFound = await Record.findOne({ username });
       if (recordFound) {
-        const allowChange = await bcryptjs.compare(
+        const validPassword = await bcryptjs.compare(
           password,
           recordFound.password
         );
-        if (allowChange) {
+        if (validPassword) {
           const token = await getToken({
             id: recordFound._id.toString(),
           });
