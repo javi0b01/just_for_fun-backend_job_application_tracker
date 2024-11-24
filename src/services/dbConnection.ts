@@ -6,9 +6,9 @@ mongoose
   .connect(DATABASE_URI)
   .then((res) => {
     //console.info('res:', res);
-    console.log('database connected successfuly!');
+    console.info('Database connected successfuly!');
   })
   .catch((err) => {
     //console.error('err:', err);
-    console.log("database doesn't connect, an error has occurred!");
+    console.info("Database doesn't connect, an error has occurred!");
   });
