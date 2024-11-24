@@ -5,6 +5,7 @@ import userRouter from './routers/usersRouter';
 
 const morgan = require('morgan');
 const cors = require('cors');
+const fileUpload = require('express-fileupload');
 
 const server: Application = express();
 
@@ -12,6 +13,7 @@ server.use(morgan('dev'));
 server.use(cors());
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
+server.use(fileUpload());
 server.use('/api/sign-up/', signUpRouter);
 server.use('/api/sign-in/', signInRouter);
 server.use('/api/users/', userRouter);

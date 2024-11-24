@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { HydratedDocument } from 'mongoose';
+import fse from 'fs-extra';
 import errorHandler from '../middlewares/errorHandler';
 import { IUser, IUserInfo, IUserList } from '../interfaces/userInterface';
 import User from '../models/userModel';
@@ -7,38 +8,77 @@ import { getRecord, setUserProfile } from '../utils/recordUtils';
 import { getProfileName } from '../utils/profileUtils';
 
 const UsersController = {
-  create: async (req: Request, res: Response) => {
+  create: async (req: any, res: Response) => {
     try {
+      if (!req.body.recordId) {
+        res.status(400).json({
+          message: {
+            severity: 'warn',
+            summary: 'Oops!',
+            detail: 'Record is mandatory',
+          },
+          data: null,
+        });
+        return;
+      }
+      if (!req.files || Object.keys(req.files).length === 0) {
+        res.status(400).json({
+          message: {
+            severity: 'warn',
+            summary: 'Oops!',
+            detail: 'Image is mandatory',
+          },
+          data: null,
+        });
+        return;
+      }
       const recordFound = await getRecord(req.body.recordId);
       if (recordFound) {
         const userFound = await User.find({
           recordId: req.body.recordId,
         });
         if (userFound.length === 0) {
-          const user: IUser = {
-            ...req.body,
-          };
-          const newUser: HydratedDocument<IUser> = new User(user);
-          const userCreated = await newUser.save();
-          if (userCreated._id === newUser._id) {
-            await setUserProfile(req.body.recordId);
-            res.status(201).json({
-              message: {
-                severity: 'success',
-                summary: 'Done!',
-                detail: 'New user created',
-              },
-              data: userCreated._id.toString(),
-            });
-          } else
-            res.status(200).json({
-              message: {
-                severity: 'warn',
-                summary: 'Oops!',
-                detail: 'Try again',
-              },
-              data: null,
-            });
+          const image = req.files.image;
+          const prefix = Date.now() + '0x0' + Math.round(Math.random() * 1e9);
+          const uploadPath = `public/uploads/${prefix}-${image.name}`;
+          image.mv(uploadPath, async function (err: any) {
+            if (err) {
+              res.status(200).json({
+                message: {
+                  severity: 'warn',
+                  summary: 'Oops!',
+                  detail: 'An error occurred while uploading the image',
+                },
+                data: null,
+              });
+            } else {
+              const user: IUser = {
+                ...req.body,
+                image: uploadPath,
+              };
+              const newUser: HydratedDocument<IUser> = new User(user);
+              const userCreated = await newUser.save();
+              if (userCreated._id === newUser._id) {
+                await setUserProfile(req.body.recordId);
+                res.status(201).json({
+                  message: {
+                    severity: 'success',
+                    summary: 'Done!',
+                    detail: 'New user created',
+                  },
+                  data: userCreated._id.toString(),
+                });
+              } else
+                res.status(200).json({
+                  message: {
+                    severity: 'warn',
+                    summary: 'Oops!',
+                    detail: 'Try again',
+                  },
+                  data: null,
+                });
+            }
+          });
         } else
           res.status(200).json({
             message: {
