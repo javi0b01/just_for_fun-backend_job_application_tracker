@@ -39,7 +39,7 @@ const UsersController = {
         });
         if (userFound.length === 0) {
           const image = req.files.image;
-          const prefix = Date.now() + '0x0' + Math.round(Math.random() * 1e9);
+          const prefix = Date.now() + '01' + Math.round(Math.random() * 1e9);
           const uploadPath = `public/uploads/${prefix}-${image.name}`;
           image.mv(uploadPath, async function (err: any) {
             if (err) {
