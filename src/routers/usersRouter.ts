@@ -7,6 +7,7 @@ router.post('/', UsersController.create);
 router.get('/', UsersController.readAll);
 router.get('/:id', UsersController.read);
 router.put('/:id', UsersController.update);
+router.get('/record/:id', UsersController.readByRecord);
 /*
 router.patch('/users/:id', UsersController.updateChunk);
 router.delete('/users/:id', UsersController.delete);

@@ -174,6 +174,55 @@ const UsersController = {
       errorHandler(error, req, res, () => null);
     }
   },
+  readByRecord: async (req: Request, res: Response) => {
+    try {
+      const userFound = await User.findOne({ recordId: req.params.id });
+      if (userFound) {
+        const recordFound = await getRecord(userFound.recordId);
+        if (recordFound) {
+          const userInfo: IUserInfo = {
+            firstName: userFound.firstName,
+            lastName: userFound.lastName,
+            nickname: userFound.nickname,
+            email: recordFound.username,
+            image: userFound.image,
+            phone: userFound.phone,
+            profile: getProfileName(recordFound.profile),
+            enable: recordFound.enable,
+            birthDay: userFound.birthDay,
+          };
+          res.status(200).json({
+            message: {
+              severity: 'success',
+              summary: 'Done!',
+              detail: 'User info',
+            },
+            data: userInfo,
+          });
+        } else {
+          res.status(404).json({
+            message: {
+              severity: 'warn',
+              summary: 'Oops!',
+              detail: 'Record not found',
+            },
+            data: null,
+          });
+        }
+      } else {
+        res.status(404).json({
+          message: {
+            severity: 'warn',
+            summary: 'Oops!',
+            detail: 'User not found',
+          },
+          data: null,
+        });
+      }
+    } catch (error) {
+      errorHandler(error, req, res, () => null);
+    }
+  },
   update: async (req: Request, res: Response) => {
     try {
       if (req.body.recordId) {
