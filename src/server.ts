@@ -1,6 +1,7 @@
 import express, { Application, Request, Response } from 'express';
-import signUpRouter from './routers/signUpRouter';
+import applicationRouter from './routers/applicationsRouter';
 import signInRouter from './routers/signInRouter';
+import signUpRouter from './routers/signUpRouter';
 import userRouter from './routers/usersRouter';
 
 const morgan = require('morgan');
@@ -14,8 +15,9 @@ server.use(cors());
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
 server.use(fileUpload());
-server.use('/api/sign-up/', signUpRouter);
+server.use('/api/applications/', applicationRouter);
 server.use('/api/sign-in/', signInRouter);
+server.use('/api/sign-up/', signUpRouter);
 server.use('/api/users/', userRouter);
 
 server.get('/', (req: Request, res: Response) => {

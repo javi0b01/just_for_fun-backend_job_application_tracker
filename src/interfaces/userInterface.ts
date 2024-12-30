@@ -15,6 +15,7 @@ export interface IUserList {
 }
 
 export interface IUserInfo {
+  id: string;
   firstName: string;
   lastName: string;
   nickname: string;

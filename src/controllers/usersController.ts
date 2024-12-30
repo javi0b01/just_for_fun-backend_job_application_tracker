@@ -132,6 +132,7 @@ const UsersController = {
         const recordFound = await getRecord(userFound.recordId);
         if (recordFound) {
           const userInfo: IUserInfo = {
+            id: userFound._id.toString(),
             firstName: userFound.firstName,
             lastName: userFound.lastName,
             nickname: userFound.nickname,
@@ -181,6 +182,7 @@ const UsersController = {
         const recordFound = await getRecord(userFound.recordId);
         if (recordFound) {
           const userInfo: IUserInfo = {
+            id: userFound._id.toString(),
             firstName: userFound.firstName,
             lastName: userFound.lastName,
             nickname: userFound.nickname,
