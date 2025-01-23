@@ -6,6 +6,7 @@ import { IUser, IUserInfo, IUserList } from '../interfaces/userInterface';
 import User from '../models/userModel';
 import { getRecord, setUserProfile } from '../utils/recordUtils';
 import { getProfileName } from '../utils/profileUtils';
+const path = require('path');
 
 const UsersController = {
   create: async (req: any, res: Response) => {
@@ -40,9 +41,10 @@ const UsersController = {
         if (userFound.length === 0) {
           const image = req.files.image;
           const prefix = Date.now() + '01' + Math.round(Math.random() * 1e9);
-          const uploadPath = `public/uploads/${prefix}-${image.name}`;
-          image.mv(uploadPath, async function (err: any) {
+          const uploadPath = `/uploads/${prefix}-${image.name}`;
+          await image.mv('public' + uploadPath, async function (err: any) {
             if (err) {
+              console.error('err:', err);
               res.status(200).json({
                 message: {
                   severity: 'warn',
@@ -52,9 +54,10 @@ const UsersController = {
                 data: null,
               });
             } else {
+              const urlPath = `${process.env.HOSTNAME}:${process.env.PORT}/`;
               const user: IUser = {
                 ...req.body,
-                image: uploadPath,
+                image: urlPath + uploadPath,
               };
               const newUser: HydratedDocument<IUser> = new User(user);
               const userCreated = await newUser.save();

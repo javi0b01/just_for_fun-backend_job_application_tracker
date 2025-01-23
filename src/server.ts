@@ -15,6 +15,7 @@ server.use(cors());
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
 server.use(fileUpload());
+server.use(express.static('public'));
 server.use('/api/applications/', applicationRouter);
 server.use('/api/sign-in/', signInRouter);
 server.use('/api/sign-up/', signUpRouter);
