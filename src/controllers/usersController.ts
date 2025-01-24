@@ -67,7 +67,7 @@ const UsersController = {
                   message: {
                     severity: 'success',
                     summary: 'Done!',
-                    detail: 'New user created',
+                    detail: "User created, It's all, please, login and enjoy.",
                   },
                   data: userCreated._id.toString(),
                 });
